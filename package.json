@@ -1,19 +1,21 @@
 {
   "name": "@ostro/encryption",
   "version": "0.0.0-alpha.0",
-  "description": "Encryption module for ostrojs",
-  "engines": {
-    "node": ">= 12.0"
-  },
+  "description": "Encryption module for OstroJS",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@ostro/support": "^0.0.0-alpha.0",
-    "@ostro/contracts": "^0.0.0-alpha.0"
+    "@ostro/support": "^0.0.0-alpha",
+    "@ostro/contracts": "^0.0.0-alpha"
   },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "engineStrict": true,
   "keywords": [
-    "encryption"
+    "encryption",
+    "hashing"
   ],
   "author": "amar",
   "license": "MIT",
