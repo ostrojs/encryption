@@ -1,6 +1,6 @@
 {
   "name": "@ostro/encryption",
-  "version": "0.0.0-alpha.1",
+  "version": "0.0.0-alpha.2",
   "description": "Encryption module for OstroJS",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
