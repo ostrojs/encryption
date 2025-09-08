@@ -37,7 +37,6 @@ class CryptoHasher extends HasherContract {
 		let $rounds = (passwordInfo.cost * passwordInfo.costFactor)
 		let $salt = $hashedValue.substring(0, $rounds)
 		$hashedValue = $hashedValue.substr($rounds, $hashedValue.length)
-
 		return crypto.createHmac('sha256', $salt).update(String($value)).digest('ascii') == $hashedValue
 	}
 
