@@ -1,5 +1,4 @@
 import type { IEncrypter } from '@ostro/contracts/encryption/encrypter';
-import '@ostro/support/helpers';
 import EncrypterContract from '@ostro/contracts/encryption/encrypter';
 import RuntimeException from '@ostro/support/exceptions/runtimeException';
 import DecryptException from './decryptException';
