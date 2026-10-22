@@ -6,7 +6,36 @@ import BcryptHasher from '../src/bcryptHasher';
 import HashManager from '../src/hashManager';
 import EncryptionServiceProvider from '../src/encryptionServiceProvider';
 import MissingAppKeyException from '../src/missingAppKeyException';
-import Container from '@ostro/container';
+class Container {
+    private factories: Record<string, any> = {};
+    private instances: Record<string, any> = {};
+    constructor() {
+        return new Proxy(this, {
+            get: (target: any, prop: string) => {
+                if (prop in target) return target[prop];
+                return target.make(prop);
+            }
+        });
+    }
+    public bind(key: string, factory: any): void {
+        this.factories[key] = factory;
+    }
+    public singleton(key: string, factory: any): void {
+        this.factories[key] = factory;
+    }
+    public make(key: string): any {
+        if (!this.instances[key] && this.factories[key]) {
+            this.instances[key] = this.factories[key](this);
+        }
+        return this.instances[key];
+    }
+    public get(key: string): any {
+        return this.make(key);
+    }
+    public bound(key: string): boolean {
+        return key in this.factories || key in this.instances;
+    }
+}
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 
