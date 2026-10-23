@@ -1,6 +1,6 @@
 {
     "name": "@ostro/encryption",
-    "version": "2.0.0-alpha.7",
+    "version": "2.0.0-alpha.8",
     "description": "Encryption module for OstroJS",
     "main": "encrypter.js",
     "types": ".types/encrypter.d.ts",
@@ -22,8 +22,8 @@
         "lint:check": "tsc --noEmit -p tsconfig.build.json"
     },
     "dependencies": {
-        "@ostro/contracts": "^2.0.0-alpha.8",
-        "@ostro/support": "^2.0.0-alpha.9",
+        "@ostro/contracts": "^2.0.0-alpha.9",
+        "@ostro/support": "^2.0.0-alpha.10",
         "bcrypt": "^5.1.1"
     },
     "engines": {
@@ -45,7 +45,7 @@
     },
     "homepage": "https://github.com/ostrojs/encryption#readme",
     "devDependencies": {
-        "@ostro/builder": "^2.0.0-alpha.6",
+        "@ostro/builder": "^2.0.0-alpha.7",
         "@types/jest": "^30.0.0",
         "@types/node": "^22.0.0",
         "c8": "^10.1.3",
