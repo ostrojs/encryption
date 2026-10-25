@@ -1,6 +1,6 @@
 import HasherContract from '@ostro/contracts/encryption/hasher';
 import RuntimeException from '@ostro/support/exceptions/runtimeException';
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 
 interface CryptoHasherOptions {
     rounds?: number;
@@ -56,7 +56,7 @@ class CryptoHasher extends HasherContract {
      */
     public make($value: crypto.BinaryLike, $options: CryptoHasherOptions = {}): string {
         const $salt: string = crypto.randomBytes(this.cost($options)).toString('ascii');
-        const $hash: any = crypto.createHmac('sha256', $salt).update($value as any).digest('ascii' as any);
+        const $hash: any = crypto.createHmac('sha256', $salt).update(String($value)).digest('ascii' as crypto.BinaryToTextEncoding);
         if ($hash === false) {
             throw new RuntimeException('Crypto hashing not supported.');
         }
@@ -83,7 +83,7 @@ class CryptoHasher extends HasherContract {
         const $rounds = (passwordInfo.cost * passwordInfo.costFactor);
         const $salt = decoded.substring(0, $rounds);
         const hashPart = decoded.substring($rounds);
-        return crypto.createHmac('sha256', $salt).update(String($value)).digest('ascii' as any) === hashPart;
+        return crypto.createHmac('sha256', $salt).update(String($value)).digest('ascii' as crypto.BinaryToTextEncoding) === hashPart;
     }
 
     /**
