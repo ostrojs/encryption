@@ -361,6 +361,15 @@ describe('@ostro/encryption Unit Tests', () => {
             provider.register();
 
             expect(() => app.make('encrypter')).toThrow(MissingAppKeyException);
+
+            // when config.get('app') is undefined
+            const appNoConfig = new Container();
+            appNoConfig.bind('config', () => ({
+                get: () => undefined
+            }));
+            const providerNoConfig = new EncryptionServiceProvider(appNoConfig);
+            providerNoConfig.register();
+            expect(() => appNoConfig.make('encrypter')).toThrow(MissingAppKeyException);
         });
 
         test('MissingAppKeyException and DecryptException properties', () => {
