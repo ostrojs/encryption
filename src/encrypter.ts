@@ -2,7 +2,7 @@ import type { IEncrypter } from '@ostro/contracts/encryption/encrypter';
 import EncrypterContract from '@ostro/contracts/encryption/encrypter';
 import RuntimeException from '@ostro/support/exceptions/runtimeException';
 import DecryptException from './decryptException';
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 import { is_json, isset } from '@ostro/support/function';
 
 interface EncryptionPayload {

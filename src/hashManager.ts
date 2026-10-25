@@ -6,11 +6,12 @@ import BcryptHasher from './bcryptHasher';
 import CryptoHasher from './cryptoHasher';
 
 class HashManager extends Manager {
+    [key: string]: Function | string | any;
 
     /**
      * The type of the manager.
      */
-    protected $type: string = 'hashing';
+    public $type: string = 'hashing';
 
     /**
      * Resolve the given driver instance.
@@ -25,7 +26,7 @@ class HashManager extends Manager {
             const $method = 'create' + pascal($driver) + 'Driver';
 
             if (method_exists(this, $method)) {
-                return (this as any)[$method]();
+                return (this[$method] as () => unknown)();
             }
         }
 
@@ -40,7 +41,7 @@ class HashManager extends Manager {
      */
     public callCustomCreator($config: any, $name?: string): any {
         const driverName = typeof $config === 'string' ? $config : $name;
-        return (this as any).$customCreators[driverName].call(this, this.$container, driverName, this.$config);
+        return this.$customCreators[driverName].call(this, this.$container, driverName, this.$config);
     }
 
     /**

@@ -1,3 +1,4 @@
+import { describe, test, expect } from "@jest/globals";
 import Encrypter from '../src/encrypter';
 import DecryptException from '../src/decryptException';
 import RuntimeException from '@ostro/support/exceptions/runtimeException';
@@ -36,7 +37,7 @@ class Container {
         return key in this.factories || key in this.instances;
     }
 }
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 import bcrypt from 'bcrypt';
 
 
@@ -170,7 +171,7 @@ describe('@ostro/encryption Unit Tests', () => {
                 update: () => ({
                     digest: () => false
                 })
-            })) as any;
+            })) as unknown as import("@ostro/contracts/container/container").Container;
             try {
                 expect(() => hasher.make('secret')).toThrow('Crypto hashing not supported.');
             } finally {
@@ -191,7 +192,7 @@ describe('@ostro/encryption Unit Tests', () => {
         test('make throws RuntimeException when bcrypt.hashSync returns false', () => {
             const hasher = new BcryptHasher({ rounds: 10 });
             const origHashSync = bcrypt.hashSync;
-            bcrypt.hashSync = (() => false) as any;
+            bcrypt.hashSync = (() => false) as unknown as typeof bcrypt.hashSync;
             try {
                 expect(() => hasher.make('secret')).toThrow('Bcrypt hashing not supported.');
             } finally {
@@ -266,8 +267,8 @@ describe('@ostro/encryption Unit Tests', () => {
             const customDriver = hashManager.driver('custom_hash');
             expect(customDriver.make('hello')).toBe('custom_hello');
             expect(customDriver.check('hello', 'custom_hello')).toBe(true);
-            expect(hashManager.check(undefined as any, 'custom_hello')).toBe(false);
-            expect((hashManager as any).callCustomCreator({}, 'custom_hash')).toBeDefined();
+            expect(hashManager.check(undefined as unknown as string, 'custom_hello')).toBe(false);
+            expect((hashManager as unknown as { callCustomCreator: (d: unknown, n: string) => unknown }).callCustomCreator({}, 'custom_hash')).toBeDefined();
 
             const defaultEnc = new Encrypter('1234567890123456');
             expect(defaultEnc.getKeyLength()).toBe(16);
@@ -360,6 +361,15 @@ describe('@ostro/encryption Unit Tests', () => {
             provider.register();
 
             expect(() => app.make('encrypter')).toThrow(MissingAppKeyException);
+
+            // when config.get('app') is undefined
+            const appNoConfig = new Container();
+            appNoConfig.bind('config', () => ({
+                get: () => undefined
+            }));
+            const providerNoConfig = new EncryptionServiceProvider(appNoConfig);
+            providerNoConfig.register();
+            expect(() => appNoConfig.make('encrypter')).toThrow(MissingAppKeyException);
         });
 
         test('MissingAppKeyException and DecryptException properties', () => {
