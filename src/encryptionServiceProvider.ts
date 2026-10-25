@@ -4,6 +4,7 @@ import { startsWith, after } from '@ostro/support/string';
 import Encrypter from './encrypter';
 import HashManager from './hashManager';
 import MissingAppKeyException from './missingAppKeyException';
+import type { IConfig } from '@ostro/contracts/config/repository';
 
 class EncryptionServiceProvider extends ServiceProvider {
 
@@ -33,7 +34,8 @@ class EncryptionServiceProvider extends ServiceProvider {
      */
     public registerEncrypter(): void {
         this.$app.singleton('encrypter', ($app: any) => {
-            const $config = $app.make('config').get('app');
+            const configRepo = $app.make('config') as IConfig;
+            const $config = (configRepo.get('app') as Record<string, any>) || {};
 
             return new Encrypter(this.parseKey($config), $config['cipher']);
         });
